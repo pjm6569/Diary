@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="400dp"
+    android:padding="10dp"
+    android:background="@color/white"
+    android:layout_gravity="center"
+    android:layout_height="230dp"
+    android:orientation="vertical"
+    >
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:text="  카테고리 추가"
+        android:textSize="18dp"
+        android:textColor="#A59494"
+        android:gravity="center_vertical"
+        />
+    <EditText
+        android:id="@+id/plusCategory"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:hint="추가할 카테고리를 입력하세요"
+        />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+        <Spinner
+            android:id="@+id/theme"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="13dp"/>
+
+        <Button
+            android:id="@+id/NoButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:background="@android:color/transparent"
+            android:text="취소"
+            android:textColor="@color/teal_200" />
+
+        <Button
+            android:id="@+id/YesButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@android:color/transparent"
+            android:text="확인"
+            android:layout_toLeftOf="@id/NoButton"
+            android:textColor="@color/teal_200" />
+    </RelativeLayout>
+
+</LinearLayout>

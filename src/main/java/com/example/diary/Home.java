@@ -29,6 +29,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -66,7 +67,7 @@ public class Home extends AppCompatActivity{
         sharedPref = getSharedPreferences("my_prefs", MODE_PRIVATE);
         editor= sharedPref.edit();
 
-//        editor.clear().commit(); 카테고리 전부 지우기(실험용)
+        editor.clear().commit(); //카테고리 전부 지우기(실험용)
 
         //액션바 숨기기
         ActionBar actionBar = getSupportActionBar();
@@ -177,6 +178,7 @@ public class Home extends AppCompatActivity{
         });
     }
 
+    //비트맵을 문자열로 바꾸는 함수
     public String getBase64String(Bitmap bitmap)
     {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -187,7 +189,7 @@ public class Home extends AppCompatActivity{
 
         return Base64.encodeToString(imageBytes, Base64.NO_WRAP);
     }
-
+//갤러리에서 사진을 불러오기 위한 Launcher 생성 및 불러온 비트맵 문자열로 바꾸어 text에 저장
     ActivityResultLauncher<Intent> Launcher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
@@ -223,7 +225,7 @@ public class Home extends AppCompatActivity{
             @Override   // position 으로 몇번째 것이 선택됬는지 값을 넘겨준다
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     text=items[position];
-                    if(text.equals("기타(갤러리)")){
+                    if(text.equals("기타(갤러리)")){//기타(갤러리)를 선택하면 갤러리에서 불러오기
                     Intent intent = new Intent();
                     intent.setType("image/*");
                     intent.setAction(Intent.ACTION_GET_CONTENT);
@@ -240,6 +242,7 @@ public class Home extends AppCompatActivity{
         Button yesBtt = cdlog.findViewById(R.id.YesButton);
         Button noBtt = cdlog.findViewById(R.id.NoButton);
         EditText edtdialog = cdlog.findViewById(R.id.plusCategory);
+        Map<String,?> keys = sharedPref.getAll();
             noBtt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -247,13 +250,29 @@ public class Home extends AppCompatActivity{
                 }
             });
             yesBtt.setOnClickListener(new View.OnClickListener() {
+                Boolean End=false; //다이얼로그를 종료할지 말지 정하는 플래그(카테고리를 추가할지)
                 @Override
                 public void onClick(View view) {
-                    String addname = edtdialog.getText().toString(); //카테고리 제목
-                    editor.putString(addname, text).apply(); //키와 밸류로 SharedPreference 추가
-                    adapter.addItems(addname, text);  //recyclerview 생성
-                    edtdialog.setText(null); //edittext 초기화
-                    cdlog.dismiss();  //다이얼로그를 닫는다.
+                        int count = 0;
+                        String addname = edtdialog.getText().toString(); //이미 있는 제목인지 검사
+                        for (Map.Entry<String, ?> entry : keys.entrySet()) {
+                            if (entry.getKey().equals(addname)) {
+                                count++;
+                            }
+                        }
+                        if(count>0){ //이미 존재하는 제목이라면 메시지 띄움
+                            Toast.makeText(getApplicationContext(), "이미 존재하는 카테고리 입니다", Toast.LENGTH_SHORT).show();
+                        }
+                        else {  //존재하지 않는 제목이라면 추가 가능.
+                            End = true;
+                        }
+
+                    if(End) {
+                        editor.putString(addname, text).apply(); //키(제목) 밸류(이미지를 나타내는 문자열)로 SharedPreference 추가
+                        adapter.addItems(addname, text);  //recyclerview 생성
+                        edtdialog.setText(null); //edittext 초기화
+                        cdlog.dismiss();  //다이얼로그를 닫는다.
+                    }
                 }
             });
     }

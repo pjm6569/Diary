@@ -9,7 +9,7 @@
         android:id="@+id/recycleimage"
         android:layout_marginTop="15dp"
         android:layout_width="290dp"
-        android:background="@android:color/transparent"
+        android:background="#77D37B"
         android:layout_height="150dp"
         android:adjustViewBounds="true"
         android:scaleType="fitXY"

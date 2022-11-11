@@ -65,6 +65,7 @@ public class recycler extends RecyclerView.Adapter<recycler.ViewHolder> {
         }
     }
 
+    //문자열을 비트맵으로 바꾸는 함수
     public static Bitmap StringToBitmap(String encodedString) {
         try {
             byte[] encodeByte = Base64.decode(encodedString, Base64.DEFAULT);

@@ -2,6 +2,7 @@ package com.example.diary;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -36,6 +37,7 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -67,7 +69,7 @@ public class Home extends AppCompatActivity{
         sharedPref = getSharedPreferences("my_prefs", MODE_PRIVATE);
         editor= sharedPref.edit();
 
-        editor.clear().commit(); //카테고리 전부 지우기(실험용)
+//        editor.clear().commit(); //카테고리 전부 지우기(실험용)
 
         //액션바 숨기기
         ActionBar actionBar = getSupportActionBar();
@@ -158,12 +160,38 @@ public class Home extends AppCompatActivity{
         });
 
 
-
         //카테고리(recyclerview 띄우기)
         RecyclerView recyclerView = findViewById(R.id.recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new recycler(list);
         recyclerView.setAdapter(adapter);
+
+        //카테고리 롱 클릭했을 때
+        adapter.setOnItemLongClickListener(new recycler.OnItemLongClickListener() {
+            @Override
+            public void onItemLongClick(View v, int pos) {
+                //다이얼로그 생성
+                AlertDialog.Builder builder = new AlertDialog.Builder(Home.this);
+                builder.setMessage("카테고리를 지우시겠습니까?");
+                builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Toast.makeText(getApplicationContext(), list.get(pos).getTitle()+" 카테고리가 삭제되었습니다", Toast.LENGTH_SHORT).show();
+                        editor.remove(list.get(pos).getTitle()).apply();
+                        adapter.deleteItems(pos);
+                    }
+                });
+
+                builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+                AlertDialog Alt_d = builder.create();
+                Alt_d.show();
+            }
+        });
 
         //dialog 띄우기 버튼
         cdlog= new Dialog(Home.this);       // Dialog 초기화
@@ -189,6 +217,7 @@ public class Home extends AppCompatActivity{
 
         return Base64.encodeToString(imageBytes, Base64.NO_WRAP);
     }
+
 //갤러리에서 사진을 불러오기 위한 Launcher 생성 및 불러온 비트맵 문자열로 바꾸어 text에 저장
     ActivityResultLauncher<Intent> Launcher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),

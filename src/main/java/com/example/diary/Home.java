@@ -69,7 +69,7 @@ public class Home extends AppCompatActivity{
         sharedPref = getSharedPreferences("my_prefs", MODE_PRIVATE);
         editor= sharedPref.edit();
 
-        editor.clear().commit(); //카테고리 전부 지우기(실험용)
+//        editor.clear().commit(); //카테고리 전부 지우기(실험용)
 
         //액션바 숨기기
         ActionBar actionBar = getSupportActionBar();

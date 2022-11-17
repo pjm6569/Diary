@@ -10,6 +10,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.telecom.Call;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Base64;
@@ -55,6 +56,7 @@ public class Home extends AppCompatActivity{
     SharedPreferences.Editor editor;
     ImageButton search; //검색 버튼
     ImageButton addc; //다이얼로그 여는 버튼
+    ImageButton toCallender;
     int clicked = 0;
     String text;
     recycler adapter;
@@ -156,6 +158,15 @@ public class Home extends AppCompatActivity{
                         adapter.setItems(searchlist);
                     }
                 }
+            }
+        });
+
+        toCallender = findViewById(R.id.tocallender);
+        toCallender.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent tocallender = new Intent(Home.this, Callender.class);
+                startActivity(tocallender);
             }
         });
 

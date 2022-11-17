@@ -8,8 +8,11 @@ import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.OnDateLongClickListener;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
@@ -17,10 +20,12 @@ import java.util.Date;
 import java.util.Locale;
 
 
-public class Callender extends AppCompatActivity implements OnDateLongClickListener, View.OnClickListener {
-    TextView todayDate1;
-    TextView todayDate2;
-    MaterialCalendarView calendarView;
+    public class Callender extends AppCompatActivity implements OnDateLongClickListener, View.OnClickListener {
+        TextView todayDate1;
+        TextView todayDate2;
+        MaterialCalendarView calendarView;
+        LinearLayout tocontent;
+        ImageView tohome;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +40,22 @@ public class Callender extends AppCompatActivity implements OnDateLongClickListe
         todayDate1.setText(getDate(todayDate1));
         todayDate2.setText(getDate(todayDate2));
         calendarView.getSelectedDate();
+        tocontent=findViewById(R.id.whole_contents);
+        tocontent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent tocontent = new Intent(Callender.this, Contents.class);
+                startActivity(tocontent);
+            }
+        });
+        tohome=findViewById(R.id.homebutton);
+        tohome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
     }
     private static String getDate(View view){
         long now = System.currentTimeMillis();

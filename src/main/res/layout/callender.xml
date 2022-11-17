@@ -44,9 +44,11 @@
                 android:layout_height="40dp"
                 android:src="@drawable/homeicon"
                 android:scaleType="fitCenter"
+                android:background="?android:attr/selectableItemBackground"
                 android:backgroundTint="@android:color/transparent"
                 android:layout_alignParentRight="true"
-                android:layout_margin="3dp"/>
+                android:layout_margin="3dp"
+                android:clickable="true"/>
         </RelativeLayout>
             <com.prolificinteractive.materialcalendarview.MaterialCalendarView
                 android:layout_width="match_parent"
@@ -63,10 +65,26 @@
                 android:id="@+id/todayDate2"
                 android:textAlignment="center"
                 android:background="#CfffE5" />
+        <LinearLayout
+            android:id="@+id/whole_contents"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:clickable="true"
+            >
             <TextView
-                android:id="@+id/content"
+                android:id="@+id/content1"
                 android:layout_width="match_parent"
-                android:layout_height="250dp" />
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/content2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <ImageView
+                android:id="@+id/content3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

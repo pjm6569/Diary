@@ -27,6 +27,7 @@
             android:background="@android:color/transparent"
             />
         <ImageButton
+            android:id="@+id/tocallender"
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:scaleType="fitXY"

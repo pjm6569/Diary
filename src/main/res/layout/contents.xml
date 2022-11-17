@@ -80,6 +80,7 @@
             android:background="#C8C8C8">
 
             <ImageView
+                android:clickable="true"
                 android:id="@+id/clip_add_recycler"
                 android:layout_width="40dp"
                 android:layout_height="40dp"

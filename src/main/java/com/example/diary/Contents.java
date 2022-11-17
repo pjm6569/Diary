@@ -16,7 +16,6 @@ import java.util.ArrayList;
 
 public class Contents extends AppCompatActivity {
 ImageView tocallender;
-
     RecyclerView recyclerView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +49,8 @@ ImageView tocallender;
         img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                adapter.addItems("","");
+                Toast.makeText(getApplicationContext(), "yes", Toast.LENGTH_SHORT).show();
             }
         });
     }

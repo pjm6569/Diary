@@ -1,32 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".Contents"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#A4DEE8">
+    android:background="#FFFFFF">
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#A3DDE7">
+        android:background="#FFFFFF">
         <ImageView
             android:id="@+id/back_button"
-            android:contentDescription="@null"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:src="@drawable/back_button"
             android:layout_gravity="start"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"/>
+            android:layout_marginTop="10dp"
+            android:clickable="true"/>
 
         <ImageView
             android:id="@+id/check_button"
-            android:contentDescription="@null"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:src="@drawable/check_button"
             android:layout_gravity="end"
             android:layout_marginEnd="10dp"
@@ -34,25 +30,23 @@
 
         <ImageView
             android:id="@+id/add_button"
-            android:contentDescription="@null"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:src="@drawable/add_button"
             android:layout_gravity="end"
             android:layout_marginEnd="10dp"
             android:layout_marginTop="10dp"
-            android:visibility="invisible" />/>
+            android:visibility="invisible" />
+
         <ImageView
             android:id="@+id/edit_button"
-            android:contentDescription="@null"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:src="@drawable/edit_button"
             android:layout_gravity="end"
             android:layout_marginEnd="70dp"
             android:layout_marginTop="10dp"
-            android:visibility="invisible" />/>
-
+            android:visibility="invisible" />
     </FrameLayout>
 
     <LinearLayout
@@ -63,15 +57,13 @@
         <EditText
             android:id="@+id/edit_text"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#2F006458"
+            android:layout_height="60dp"
             android:cursorVisible="true"
             android:hint="  제목 없음"
             android:importantForAutofill="no"
             android:inputType="textCapSentences|textAutoCorrect"
-            android:textColorHint="@color/teal_700"
-            android:textSize="30sp"
-            tools:ignore="TouchTargetSizeCheck,TouchTargetSizeCheck" />
+            android:textColorHint="#A8A8A8"
+            android:textSize="30sp" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view"
@@ -80,9 +72,7 @@
             android:layout_marginEnd="0dp"
             android:layout_marginBottom="50dp"
             android:layout_weight="1"
-            android:background="#A3DDE7"
-            tools:listitem="@layout/item_card">
-        </androidx.recyclerview.widget.RecyclerView>
+           />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -91,13 +81,11 @@
 
             <ImageView
                 android:id="@+id/clip_add_recycler"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:layout_marginStart="1dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:contentDescription="@null"
                 android:src="@drawable/clip_button"
-                tools:ignore="ImageContrastCheck" />
+                />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".CardItem">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <EditText
+                        android:id="@+id/rv_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_centerInParent="true"
+                        android:background="#A3DDE7"
+                        android:cursorVisible="true"
+                        android:hint="  내용을 입력하시오"
+                        android:inputType="textCapSentences|textAutoCorrect" />
+
+                        <ImageView
+                            android:id="@+id/insert_image"
+                            android:layout_alignBottom="@id/rv_content"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:srcCompat="@mipmap/ic_launcher"
+                            />
+                </RelativeLayout>
+</androidx.cardview.widget.CardView>

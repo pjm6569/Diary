@@ -24,7 +24,6 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         }
         public void oB(Data data){
             CategoryText.setText(data.getTitle());
-
         }
 
     }

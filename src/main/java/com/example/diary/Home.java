@@ -181,7 +181,7 @@ public class Home extends AppCompatActivity{
         toCallender.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent tocallender = new Intent(Home.this, Callender.class);
+                Intent tocallender = new Intent(Home.this, Calendar.class);
                 startActivity(tocallender);
             }
         });

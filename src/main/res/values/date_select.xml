@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="date_selection">
+        <item>여러 개 선택</item>
+        <item>범위 선택</item>
+    </string-array>
+</resources>

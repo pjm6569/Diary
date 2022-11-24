@@ -29,6 +29,7 @@ import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
@@ -45,6 +46,7 @@ public class Contents extends AppCompatActivity {
     int size;
     ArrayList<CardItem> list = new ArrayList<>();
     MyRecyclerAdapter adapter;
+    List<String> image = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +63,7 @@ public class Contents extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
         //날짜에 맞는 데이터 검색
+
 
 
         Title = findViewById(R.id.edit_text);
@@ -144,6 +147,7 @@ public class Contents extends AppCompatActivity {
                             text="cImage"+timeStamp+".png";
                             saveBitmapToJpeg(bitmap);
                             text=filepath+"/"+text;
+//                            image.add(text);
                             int size= list.size()-1;
                             list.get(size).setContents(text);
                             list.add(new CardItem("", ""));

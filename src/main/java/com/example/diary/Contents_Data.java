@@ -3,6 +3,7 @@ package com.example.diary;
 import android.graphics.Bitmap;
 
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 public class Contents_Data extends RealmObject {
     private String Date;
@@ -10,12 +11,17 @@ public class Contents_Data extends RealmObject {
     private String Content1;
     private String Content2;
 
+
     public void setDate(String date) {
         Date=date;
     }
 
     public void setTitle(String title) {
         Title=title;
+    }
+
+    public String getTitle(){
+        return Title;
     }
 
     public void setContent1(String content1) {

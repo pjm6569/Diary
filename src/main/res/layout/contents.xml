@@ -60,7 +60,6 @@
             android:layout_height="60dp"
             android:cursorVisible="true"
             android:hint="  제목 없음"
-            android:importantForAutofill="no"
             android:inputType="textCapSentences|textAutoCorrect"
             android:textColorHint="#A8A8A8"
             android:textSize="30sp" />

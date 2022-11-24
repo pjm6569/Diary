@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -29,12 +30,19 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
+import io.realm.RealmResults;
+
 public class Contents extends AppCompatActivity {
+    EditText Title;
+    ImageView Checkbt;
     ImageView tocallender;
     RecyclerView recyclerView;
     String filepath;
     String text;
     Bitmap bitmap;
+    int size;
     ArrayList<CardItem> list = new ArrayList<>();
     MyRecyclerAdapter adapter;
 
@@ -42,8 +50,28 @@ public class Contents extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.contents);
+        //Realm 초기화 및 생성
+        Realm.init(getApplicationContext());
+        RealmConfiguration config = new RealmConfiguration.Builder().allowWritesOnUiThread(true).build();
+        Realm.setDefaultConfiguration(config);
+        Realm mRealm = Realm.getDefaultInstance();
+        //날짜 불러오기
+        String Date = getIntent().getStringExtra("Date");
+        //액션바 지우기
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
+        //날짜에 맞는 데이터 검색
+
+
+        Title = findViewById(R.id.edit_text);
+        try {
+            Contents_Data cd = mRealm.where(Contents_Data.class).equalTo("Date", Date).findFirst();
+            Title.setText(cd.getTitle());
+        }
+        catch(Exception e){
+
+        }
+        /////
         filepath=getFilesDir().getAbsolutePath()+"/CThumbs";
         list.add(new CardItem("", ""));
         //리싸이클러 뷰 생성
@@ -52,8 +80,6 @@ public class Contents extends AppCompatActivity {
         //어댑터를 통해 리싸이클러 뷰의 타이틀 생성
         adapter = new MyRecyclerAdapter(list);
         recyclerView.setAdapter(adapter);
-
-
         tocallender=findViewById(R.id.back_button);
         tocallender.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,7 +88,28 @@ public class Contents extends AppCompatActivity {
             }
         });
 
-
+        Checkbt=findViewById(R.id.check_button);
+        Checkbt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String title = Title.getText().toString();;
+                mRealm.executeTransaction(new Realm.Transaction() {
+                    @Override
+                    public void execute(Realm realm) {
+                        try {
+                            Contents_Data cd = mRealm.where(Contents_Data.class).equalTo("Date", Date).findFirst();
+                            cd.setTitle(title);
+                        }
+                        catch(Exception e) {
+                            Contents_Data CD = realm.createObject(Contents_Data.class);
+                            CD.setTitle(title);
+                            CD.setDate(Date);
+                        }
+                        Toast.makeText(getApplicationContext(), title, Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
 
         //클립보드 이미지 변수 생성
         ImageView img = findViewById(R.id.clip_add_recycler);
@@ -70,10 +117,16 @@ public class Contents extends AppCompatActivity {
         img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent();
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                Launcher.launch(intent);
+                size=list.size();
+                if(size<=2) {
+                    Intent intent = new Intent();
+                    intent.setType("image/*");
+                    intent.setAction(Intent.ACTION_GET_CONTENT);
+                    Launcher.launch(intent);
+                }
+                else{
+                    Toast.makeText(getApplicationContext(), "사진은 2개까지입니다.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

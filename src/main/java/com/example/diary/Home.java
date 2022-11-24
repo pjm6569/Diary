@@ -5,10 +5,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.telecom.Call;
 import android.text.Editable;
@@ -44,30 +46,44 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Map;
 
 public class Home extends AppCompatActivity{
-    int ss=0;
-    SharedPreferences sharedPref;
+    int gall =0; //갤러리를 열었는지 확인
+    String filepath;
+    SharedPreferences sharedPref; //리스트를 저장하는 sharedPref
     SharedPreferences.Editor editor;
     ImageButton search; //검색 버튼
     ImageButton addc; //다이얼로그 여는 버튼
-    ImageButton toCallender;
-    int clicked = 0;
-    String text;
-    recycler adapter;
+    ImageButton toCallender; //캘린더 버튼
+    int clicked = 0; //클릭여부 확인
+    String text; // 카테고리의 내용 해당하는 텍스트 / 이미지명을 겸함
+    recycler adapter; //어댑터
     Dialog cdlog; //커스텀 다이얼로그
     Uri uri;
-
+    String imgname="temp"; //이미지명에 쓰일 기본 제목
+    ArrayList<Data> list = new ArrayList<>(); //리스트 미리 선언
+    Bitmap bitmap; //이미지에 필요한 비트맵 미리 선언
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home);
+        filepath=getFilesDir().getAbsolutePath()+"/Thumbs";
         sharedPref = getSharedPreferences("my_prefs", MODE_PRIVATE);
         editor= sharedPref.edit();
 
@@ -84,13 +100,12 @@ public class Home extends AppCompatActivity{
         search = findViewById(R.id.search_button);
 
         //RecyclerView 임의추가
-        ArrayList<Data> list = new ArrayList<>();
+
+        String json = sharedPref.getString("x", null);
+        preftoArray();
         ArrayList<Data> searchlist =  new ArrayList<>();
 
-        Map<String,?> keys = sharedPref.getAll();
-        for(Map.Entry<String,?> entry : keys.entrySet()){
-            list.add(new Data(entry.getKey(), entry.getValue().toString()));
-        }
+
 
         //검색창을 만든다.
 
@@ -161,6 +176,7 @@ public class Home extends AppCompatActivity{
             }
         });
 
+        //캘린더 액티비티로 이동
         toCallender = findViewById(R.id.tocallender);
         toCallender.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -187,9 +203,23 @@ public class Home extends AppCompatActivity{
                 builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        File file = new File(filepath);  // 내부저장소 캐시 경로를 받아오기
+                        File[] flist = file.listFiles();
+                        String target=list.get(pos).getImage();
+                        try {
+                            String realtarget=target.substring(target.length()-22, target.length());
+                            for (int j = 0; j < flist.length; j++) {    // 배열의 크기만큼 반복
+                                if (flist[j].getName().equals(realtarget)) {   // 삭제하고자 하는 이름과 같은 파일명이 있으면 실행
+                                    flist[j].delete();  // 파일 삭제
+                                }
+                            }
+                        }
+                        catch(Exception e){
+                        }
                         Toast.makeText(getApplicationContext(), list.get(pos).getTitle()+" 카테고리가 삭제되었습니다", Toast.LENGTH_SHORT).show();
-                        editor.remove(list.get(pos).getTitle()).apply();
-                        adapter.deleteItems(pos);
+                        list.remove(pos);
+                        adapter.notifyDataSetChanged();
+                        savepreference();
                     }
                 });
 
@@ -217,19 +247,36 @@ public class Home extends AppCompatActivity{
         });
     }
 
-    //비트맵을 문자열로 바꾸는 함수
-    public String getBase64String(Bitmap bitmap)
-    {
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-
-        byte[] imageBytes = byteArrayOutputStream.toByteArray();
-
-        return Base64.encodeToString(imageBytes, Base64.NO_WRAP);
+    //프리퍼런스 저장
+    private void savepreference(){
+        JSONArray a = new JSONArray();
+        Gson gson =new GsonBuilder().create();
+        for (int i = 0; i < list.size(); i++) {
+            String string = gson.toJson(list.get(i), Data.class);
+            a.put(string);
+        }
+        editor.putString("x", a.toString());
+        editor.apply();
     }
 
-//갤러리에서 사진을 불러오기 위한 Launcher 생성 및 불러온 비트맵 문자열로 바꾸어 text에 저장
+    //프리퍼런스 불러오기
+    private void preftoArray(){
+        String json =  sharedPref.getString("x","");
+        Gson gson = new GsonBuilder().create();
+        if (json != null) {
+            try {
+                JSONArray a = new JSONArray(json);
+                for (int i = 0; i < a.length(); i++) {
+                    Data orderData = gson.fromJson( a.get(i).toString() , Data.class);
+                    list.add(orderData);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    //갤러리에서 사진을 불러오기 위한 Launcher 생성
     ActivityResultLauncher<Intent> Launcher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
@@ -238,8 +285,9 @@ public class Home extends AppCompatActivity{
                     if (result.getResultCode() == RESULT_OK && result.getData() != null) {
                         uri = result.getData().getData();
                         try {
-                            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
-                            text = getBase64String(bitmap);
+                            bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                            String timeStamp = new SimpleDateFormat("yyyyMMddhhmmss").format(new Date());
+                            text=imgname+timeStamp+".png";
                         } catch (FileNotFoundException e) {
                             e.printStackTrace();
                         } catch (IOException e) {
@@ -249,7 +297,23 @@ public class Home extends AppCompatActivity{
                 }
             });
 
-
+    //사진을 저장함.
+    public void saveBitmapToJpeg(Bitmap bitmap) {   // 선택한 이미지 내부 저장소에 저장
+        File file = new File(filepath);
+        if(!file.exists()){
+            file.mkdir();
+        }
+        File tempFile = new File(filepath,text);   // 파일 경로와 이름 넣기
+        try {
+            tempFile.createNewFile();   // 자동으로 빈 파일을 생성하기
+            FileOutputStream out = new FileOutputStream(tempFile);  // 파일을 쓸 수 있는 스트림을 준비하기
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);   // compress 함수를 사용해 스트림에 비트맵을 저장하기
+            out.close();    // 스트림 닫아주기
+            }
+        catch (Exception e) {
+            Toast.makeText(getApplicationContext(), "파일 저장 실패", Toast.LENGTH_SHORT).show();
+        }
+    }
 
 
 
@@ -265,11 +329,13 @@ public class Home extends AppCompatActivity{
             @Override   // position 으로 몇번째 것이 선택됬는지 값을 넘겨준다
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     text=items[position];
+                    gall=0;
                     if(text.equals("기타(갤러리)")){//기타(갤러리)를 선택하면 갤러리에서 불러오기
                     Intent intent = new Intent();
                     intent.setType("image/*");
                     intent.setAction(Intent.ACTION_GET_CONTENT);
                     Launcher.launch(intent);
+                    gall=1;
                 }
             }
 
@@ -282,7 +348,6 @@ public class Home extends AppCompatActivity{
         Button yesBtt = cdlog.findViewById(R.id.YesButton);
         Button noBtt = cdlog.findViewById(R.id.NoButton);
         EditText edtdialog = cdlog.findViewById(R.id.plusCategory);
-        Map<String,?> keys = sharedPref.getAll();
             noBtt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -293,23 +358,26 @@ public class Home extends AppCompatActivity{
                 Boolean End=false; //다이얼로그를 종료할지 말지 정하는 플래그(카테고리를 추가할지)
                 @Override
                 public void onClick(View view) {
-                        int count = 0;
-                        String addname = edtdialog.getText().toString(); //이미 있는 제목인지 검사
-                        for (Map.Entry<String, ?> entry : keys.entrySet()) {
-                            if (entry.getKey().equals(addname)) {
-                                count++;
-                            }
+                    int count = 0;
+                    String addname = edtdialog.getText().toString(); //이미 있는 제목인지 검사
+                    for(int i=0;i<list.size();i++){
+                        if(addname.equals(list.get(i).getTitle())){
+                            count++;
                         }
-                        if(count>0){ //이미 존재하는 제목이라면 메시지 띄움
-                            Toast.makeText(getApplicationContext(), "이미 존재하는 카테고리 입니다", Toast.LENGTH_SHORT).show();
-                        }
-                        else {  //존재하지 않는 제목이라면 추가 가능.
-                            End = true;
-                        }
-
+                    }
+                    if(count==0)
+                        End=true;
+                    else {
+                        Toast.makeText(getApplicationContext(), "이미 있는 카테고리입니다.", Toast.LENGTH_SHORT).show();
+                    }
                     if(End) {
-                        editor.putString(addname, text).apply(); //키(제목) 밸류(이미지를 나타내는 문자열)로 SharedPreference 추가
-                        adapter.addItems(addname, text);  //recyclerview 생성
+                        if(gall==1) {
+                            saveBitmapToJpeg(bitmap);
+                            text = filepath + "/" + text;
+                        }
+                        list.add(new Data(addname, text));
+                        adapter.notifyDataSetChanged();
+                        savepreference();
                         edtdialog.setText(null); //edittext 초기화
                         cdlog.dismiss();  //다이얼로그를 닫는다.
                     }

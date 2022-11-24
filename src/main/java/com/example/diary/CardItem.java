@@ -17,4 +17,9 @@ public class CardItem {
         return contents;
     }
 
+    public void setContents(String content) {
+        this.contents=content;
+
+    }
+
 }

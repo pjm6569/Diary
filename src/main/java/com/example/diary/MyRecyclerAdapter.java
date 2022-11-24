@@ -35,6 +35,8 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.Vi
             IV = itemView.findViewById(R.id.insert_image);
         }
         public void onBind(CardItem data) {
+            Bitmap bm = BitmapFactory.decodeFile(data.getContents());
+            IV.setImageBitmap(bm);
         }
     }
 

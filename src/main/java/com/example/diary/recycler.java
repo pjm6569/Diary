@@ -91,22 +91,12 @@ public class recycler extends RecyclerView.Adapter<recycler.ViewHolder> {
                     img.setImageResource(R.drawable.journey_2);
                     break;
                 default:
-                    img.setImageBitmap(StringToBitmap(data.getImage()));
+                    Bitmap bm = BitmapFactory.decodeFile(data.getImage());
+                    img.setImageBitmap(bm);
             }
         }
     }
 
-    //문자열을 비트맵으로 바꾸는 함수
-    public static Bitmap StringToBitmap(String encodedString) {
-        try {
-            byte[] encodeByte = Base64.decode(encodedString, Base64.DEFAULT);
-            Bitmap bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
-            return bitmap;
-        } catch (Exception e) {
-            e.getMessage();
-            return null;
-        }
-    }
 
     recycler(ArrayList<Data> list) {
         mData = list;

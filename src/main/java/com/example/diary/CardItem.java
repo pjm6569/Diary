@@ -19,7 +19,10 @@ public class CardItem {
 
     public void setContents(String content) {
         this.contents=content;
+    }
 
+    public void setTitle(String title) {
+        this.title=title;
     }
 
 }

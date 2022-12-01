@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:layout_marginTop="12dp">
-    <ImageButton
+    <ImageView
         android:id="@+id/thumbnail"
         android:layout_width="40dp"
         android:layout_height="40dp"
@@ -16,6 +16,6 @@
         android:layout_height="40dp"
         android:text="example"
         android:gravity="center"
-
+        android:background="@drawable/view_border"
         />
 </LinearLayout>

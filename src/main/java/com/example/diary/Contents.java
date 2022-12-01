@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -17,16 +18,22 @@ import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.sql.Array;
 import java.text.SimpleDateFormat;
@@ -39,10 +46,12 @@ import io.realm.RealmConfiguration;
 import io.realm.RealmResults;
 
 public class Contents extends AppCompatActivity {
+    int cliked = 0;
     private ImageView save;
     private ImageView edit;
     private ImageView add;
     private boolean saved;
+    ImageView img;
     EditText Title;
     ImageView Checkbt;
     ImageView tocallender;
@@ -56,7 +65,6 @@ public class Contents extends AppCompatActivity {
     ArrayList <String> DeleteFiles = new ArrayList<>();
     ArrayList<CardItem> list = new ArrayList<>();
     MyRecyclerAdapter adapter;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -128,6 +136,12 @@ public class Contents extends AppCompatActivity {
         Checkbt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                cliked=1;
+                if(cliked==1){
+                    LinearLayout lm = findViewById(R.id.whole);
+                    lm.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
+                    hideKeyboard();
+                }
                 edit.setVisibility(View.VISIBLE);
                 add.setVisibility(View.VISIBLE);
                 save.setVisibility(View.INVISIBLE);
@@ -178,7 +192,7 @@ public class Contents extends AppCompatActivity {
         });
 
         //클립보드 이미지 변수 생성
-        ImageView img = findViewById(R.id.clip_add_recycler);
+        img = findViewById(R.id.clip_add_recycler);
         //클립보드 버튼을 눌렀을 때 리싸이클러 뷰에 Item 추가하는 코드
         img.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -309,5 +323,19 @@ public class Contents extends AppCompatActivity {
             }
         }
     }
+    void hideKeyboard()
+    {
+        InputMethodManager inputManager = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputManager.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        x();
+    }
+
+    void x(){
+        View cView = getCurrentFocus();
+        if (cView instanceof EditText) {
+            cView.setFocusable(false);
+        }
+    }
 }
+
 

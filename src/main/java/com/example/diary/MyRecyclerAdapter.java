@@ -41,12 +41,10 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.Vi
     {
         this.mLongListener = listener;
     }
-
     private ArrayList<CardItem> mycontents;
     public class ViewHolder extends RecyclerView.ViewHolder {
         EditText edt;
         ImageView IV;
-
         public ViewHolder(View itemView) {
             super(itemView);
             edt = itemView.findViewById(R.id.rv_content);
@@ -66,6 +64,7 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.Vi
                     mycontents.get(getAdapterPosition()).setTitle(editable.toString());
                 }
             });
+
             IV = itemView.findViewById(R.id.insert_image);
 
             IV.setOnLongClickListener(new View.OnLongClickListener()
@@ -109,7 +108,6 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.Vi
         EditText edt = holder.edt;
         edt.setText(mycontents.get(position).getTitle());
     }
-
 
     @Override
     public int getItemCount() {

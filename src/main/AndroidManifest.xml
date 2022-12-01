@@ -10,6 +10,24 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Diary" >
         <activity
+            android:name=".CT_list"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".example"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".Home"
             android:exported="true" >
             <intent-filter>
@@ -29,15 +47,6 @@
         </activity>
         <activity
             android:name=".Contents"
-            android:exported="true" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".list2"
             android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

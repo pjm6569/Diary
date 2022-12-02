@@ -1,8 +1,8 @@
 package com.example.diary;
 
 public class CardItem {
-    private String title;
-    private String contents;
+    private String title="";
+    private String contents="";
 
     public CardItem(String title, String contents) {
         this.title = title;

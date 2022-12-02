@@ -24,11 +24,24 @@ import java.util.ArrayList;
 public class recycler extends RecyclerView.Adapter<recycler.ViewHolder> {
     private ArrayList<Data> mData;
 
+
+    public interface OnItemClickEventListener {
+        void onItemClick(View v, int pos);
+    }
+
+    private OnItemClickEventListener mItemClickListener = null;
+
+    public void setOnItemClickListener(OnItemClickEventListener a_listener) {
+        this.mItemClickListener = a_listener;
+    }
+
+
     // 커스텀 리스너 인터페이스 (롱클릭)
     public interface OnItemLongClickListener
     {
         void onItemLongClick(View v, int pos);
     }
+
 
     // 리스너 객체 참조를 저장하는 변수(롱클릭)
     private OnItemLongClickListener mLongListener = null;
@@ -47,6 +60,18 @@ public class recycler extends RecyclerView.Adapter<recycler.ViewHolder> {
 
             img = itemView.findViewById(R.id.recycleimage);
             tv = itemView.findViewById(R.id.recyclertext);
+
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int pos=getAdapterPosition();
+                    if(pos!=RecyclerView.NO_POSITION)
+                    {
+                        mItemClickListener.onItemClick(v, pos);
+                    }
+                }
+            });
 
             itemView.setOnLongClickListener(new View.OnLongClickListener()
             {
@@ -68,6 +93,7 @@ public class recycler extends RecyclerView.Adapter<recycler.ViewHolder> {
             tv.setText(data.getTitle());
             switch (data.getImage()){
                 case("테마(기본값)"):
+                    img.setImageResource(0);
                     break;
                 case("Birthday 1"):
                     img.setImageResource(R.drawable.birthday_1);

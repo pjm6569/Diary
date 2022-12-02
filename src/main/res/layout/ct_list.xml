@@ -9,9 +9,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#999A9A"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginBottom="30dp">
 
         <ImageView
+            android:id="@+id/backtohome"
             android:layout_margin="3dp"
             android:layout_width="40dp"
             android:layout_height="wrap_content"
@@ -19,11 +21,12 @@
             android:src="@drawable/back"/>
 
         <TextView
+            android:id="@+id/CTTitle"
             android:layout_marginLeft="30dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Birthday"
+            android:text=""
             android:textSize="30dp" />
 
     </LinearLayout>

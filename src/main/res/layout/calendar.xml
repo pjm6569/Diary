@@ -36,8 +36,8 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/test_date"
-                android:text="날짜표시"
+                android:id="@+id/dateSelect"
+                android:text="날짜선택"
                 android:layout_toLeftOf="@+id/homebutton"/>
             <Button
                 android:layout_width="75dp"
@@ -51,7 +51,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/exitSelect"
                 android:text="취소"
-                android:layout_toLeftOf="@+id/test_date"
+                android:layout_toLeftOf="@+id/dateSelect"
                 android:visibility="gone"/>
             <ImageView
                 android:id="@+id/homebutton"
@@ -69,7 +69,7 @@
             android:layout_width="match_parent"
             android:layout_height="280dp"
             android:id="@+id/calendarView"
-            app:mcv_selectionColor="#00F"
+            app:mcv_selectionColor="#3366FF"
             app:mcv_tileHeight="35dp"
             app:mcv_showOtherDates="other_months" />
         <TextView
@@ -79,33 +79,29 @@
             android:textSize="40dp"
             android:id="@+id/todayDate2"
             android:textAlignment="center"
-            android:background="#CfffE5" />
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/showSelectedDate"
-            android:text="선택된 날짜 표시"
-            android:visibility="gone"/>
+            android:background="#CCEEE5" />
         <LinearLayout
             android:id="@+id/whole_contents"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:clickable="true"
-            >
+            android:clickable="true">
             <TextView
                 android:id="@+id/content1"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:textSize="30sp"
+                android:maxLines="1"/>
             <TextView
                 android:id="@+id/content2"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:maxLines="1"/>
             <ImageView
                 android:id="@+id/content3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
         </LinearLayout>
-
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

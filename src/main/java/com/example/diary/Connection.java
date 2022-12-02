@@ -1,13 +1,11 @@
 package com.example.diary;
 
-public class Connection {
-    String Name;
-    String Date;
+import io.realm.RealmObject;
 
-    public Connection(String Name, String Date) {
-        this.Name = Name;
-        this.Date= Date;
-    }
+public class Connection extends RealmObject {
+    String Name="";
+    String Date="";
+
     public void setName(String Name){
         this.Name = Name;
     }

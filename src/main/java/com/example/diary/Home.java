@@ -62,6 +62,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Map;
 
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
+import io.realm.RealmResults;
+
 public class Home extends AppCompatActivity{
     int gall =0; //갤러리를 열었는지 확인
     String filepath;
@@ -86,6 +90,12 @@ public class Home extends AppCompatActivity{
         filepath=getFilesDir().getAbsolutePath()+"/Thumbs";
         sharedPref = getSharedPreferences("my_prefs", MODE_PRIVATE);
         editor= sharedPref.edit();
+
+        Realm.init(getApplicationContext());
+        RealmConfiguration config = new RealmConfiguration.Builder().allowWritesOnUiThread(true).build();
+        Realm.setDefaultConfiguration(config);
+        Realm mRealm = Realm.getDefaultInstance();
+
 
 //        editor.clear().commit(); //카테고리 전부 지우기(실험용)
 
@@ -197,6 +207,7 @@ public class Home extends AppCompatActivity{
         adapter.setOnItemLongClickListener(new recycler.OnItemLongClickListener() {
             @Override
             public void onItemLongClick(View v, int pos) {
+                String Name = list.get(pos).getTitle();
                 //다이얼로그 생성
                 AlertDialog.Builder builder = new AlertDialog.Builder(Home.this);
                 builder.setMessage("카테고리를 지우시겠습니까?");
@@ -216,6 +227,13 @@ public class Home extends AppCompatActivity{
                         }
                         catch(Exception e){
                         }
+                        RealmResults<Connection> results = mRealm.where(Connection.class).equalTo("Name", Name).findAll();
+                        mRealm.executeTransaction(new Realm.Transaction() {
+                            @Override
+                            public void execute(Realm realm) {
+                                results.deleteAllFromRealm();
+                            }
+                        });
                         Toast.makeText(getApplicationContext(), list.get(pos).getTitle()+" 카테고리가 삭제되었습니다", Toast.LENGTH_SHORT).show();
                         list.remove(pos);
                         adapter.notifyDataSetChanged();
@@ -231,6 +249,15 @@ public class Home extends AppCompatActivity{
                 });
                 AlertDialog Alt_d = builder.create();
                 Alt_d.show();
+            }
+        });
+
+        adapter.setOnItemClickListener(new recycler.OnItemClickEventListener() {
+            @Override
+            public void onItemClick(View v, int pos) {
+                Intent tolist = new Intent(Home.this, CT_list.class);
+                tolist.putExtra("Name", list.get(pos).getTitle());
+                startActivity(tolist);
             }
         });
 
@@ -336,7 +363,8 @@ public class Home extends AppCompatActivity{
                     intent.setAction(Intent.ACTION_GET_CONTENT);
                     Launcher.launch(intent);
                     gall=1;
-                }
+                    }
+
             }
 
             @Override

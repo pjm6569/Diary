@@ -6,13 +6,13 @@ import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
 public class Contents_Data extends RealmObject {
-    private String Date;
-    private String Title;
-    private String txt1;
-    private String txt2;
-    private String txt3;
-    private String img1;
-    private String img2;
+    private String Date="";
+    private String Title="";
+    private String txt1="";
+    private String txt2="";
+    private String txt3="";
+    private String img1="";
+    private String img2="";
 
 
     public void setDate(String date) {

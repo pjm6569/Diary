@@ -1,6 +1,9 @@
 package com.example.diary;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,10 +43,13 @@ public class ListAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View converView, ViewGroup parent) {
         View view = mLayoutInflater.inflate(R.layout.category, null);
-
         ImageView imageView = view.findViewById(R.id.thumbnail);
         TextView date = view.findViewById(R.id.contents);
         date.setText(sample.get(position).getTitle());
+        if(!sample.get(position).getImage().equals("")){
+            Bitmap bt = BitmapFactory.decodeFile(sample.get(position).getImage());
+            imageView.setImageBitmap(bt);
+        }
         return view;
     }
 }
